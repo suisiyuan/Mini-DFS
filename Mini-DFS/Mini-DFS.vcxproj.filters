@@ -5,6 +5,12 @@
     <ClCompile Include="MiniDFS.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="DataServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="NameServer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Resource Files">
@@ -32,6 +38,9 @@
     <QtMoc Include="MiniDFS.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="NameServer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MiniDFS.ui">
@@ -45,5 +54,13 @@
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="Mini-DFS.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="DataServer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
