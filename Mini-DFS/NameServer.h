@@ -29,6 +29,9 @@ private:
 
 	quint32 fileId;
 
+
+	bool itemIsDirectory(QTreeWidgetItem *item);
+
 signals:
 	void addChunk(quint32 fileId, quint32 chunkId, quint32 chunkNum, QByteArray chunkData);
 	void fileUploaded();

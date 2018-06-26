@@ -60,10 +60,10 @@ void NameServer::uploadFile(QString filePath, QString uploadPath)
 	QString str4 = QString::number(chunkNum);
 	info << str0 << str1 << str2 << str3 << str4;
 
-	QList<QTreeWidgetItem *> dirs = this->fileTree->findItems(uploadPath, Qt::MatchExactly, FILE_COL);
+	QList<QTreeWidgetItem *> dirs = this->fileTree->findItems(uploadPath, Qt::MatchExactly | Qt::MatchRecursive, FILE_COL);
 	QTreeWidgetItem *dir = dirs.first();
 	dir->insertChild(0, new QTreeWidgetItem(info));
-	this->fileTree->sortItems(FILE_COL, Qt::AscendingOrder);
+	dir->sortChildren(FILE_COL, Qt::AscendingOrder);
 
 	emit fileUploaded();
 }
@@ -77,10 +77,24 @@ void NameServer::createDir(QString dirPath, QString dirName)
 	QString str1 = QString("True");
 	info << str0 << str1;
 
-	QList<QTreeWidgetItem *> dirs = this->fileTree->findItems(dirPath, Qt::MatchExactly, FILE_COL);
+	QList<QTreeWidgetItem *> dirs = this->fileTree->findItems(dirPath, Qt::MatchExactly | Qt::MatchRecursive, FILE_COL);
 	QTreeWidgetItem *dir = dirs.first();
+	
+	quint32 count = dir->childCount();
+	for (quint32 i = 0; (i < count) && itemIsDirectory(dir->child(i)); i++) {
+		if (dir->child(i)->text(FILE_COL) == str0) {
+			return;
+		}
+	}
+
 	dir->insertChild(0, new QTreeWidgetItem(info));
-	this->fileTree->sortItems(FILE_COL, Qt::AscendingOrder);
+	dir->sortChildren(FILE_COL, Qt::AscendingOrder);
 	
 	emit dirCreated();
+}
+
+// 判断一个item是不是文件夹
+bool NameServer::itemIsDirectory(QTreeWidgetItem *item)
+{
+	return (item->text(DIR_COL) == QString("True"));
 }
