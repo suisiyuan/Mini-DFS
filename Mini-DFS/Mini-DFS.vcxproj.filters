@@ -41,6 +41,9 @@
     <QtMoc Include="NameServer.h">
       <Filter>Header Files</Filter>
     </QtMoc>
+    <QtMoc Include="DataServer.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtUic Include="MiniDFS.ui">
@@ -56,9 +59,6 @@
     <ResourceCompile Include="Mini-DFS.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="DataServer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="config.h">
       <Filter>Header Files</Filter>
     </ClInclude>

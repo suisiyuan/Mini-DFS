@@ -46,7 +46,7 @@
              </column>
              <column>
               <property name="text">
-               <string>Is Directory</string>
+               <string>Directory?</string>
               </property>
              </column>
              <column>
@@ -74,43 +74,7 @@
               <property name="text">
                <string/>
               </property>
-              <item>
-               <property name="text">
-                <string>/data</string>
-               </property>
-               <property name="text">
-                <string>True</string>
-               </property>
-              </item>
-              <item>
-               <property name="text">
-                <string>text.pdf</string>
-               </property>
-               <property name="text">
-                <string>False</string>
-               </property>
-              </item>
              </item>
-            </widget>
-           </item>
-           <item row="1" column="0">
-            <spacer name="horizontalSpacer_3">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>300</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="createDirBtn">
-             <property name="text">
-              <string>新建文件夹</string>
-             </property>
             </widget>
            </item>
           </layout>
@@ -146,8 +110,8 @@
           <attribute name="title">
            <string>Upload</string>
           </attribute>
-          <layout class="QGridLayout" name="gridLayout_4">
-           <item row="0" column="0" colspan="2">
+          <layout class="QVBoxLayout" name="verticalLayout">
+           <item>
             <layout class="QGridLayout" name="gridLayout">
              <item row="0" column="0">
               <widget class="QLabel" name="label">
@@ -201,25 +165,36 @@
              </item>
             </layout>
            </item>
-           <item row="1" column="0">
-            <spacer name="horizontalSpacer">
-             <property name="orientation">
-              <enum>Qt::Horizontal</enum>
-             </property>
-             <property name="sizeHint" stdset="0">
-              <size>
-               <width>300</width>
-               <height>20</height>
-              </size>
-             </property>
-            </spacer>
-           </item>
-           <item row="1" column="1">
-            <widget class="QPushButton" name="uploadBtn">
-             <property name="text">
-              <string>Upload</string>
-             </property>
-            </widget>
+           <item>
+            <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>38</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
+             <item>
+              <widget class="QPushButton" name="uploadBtn">
+               <property name="text">
+                <string>Upload</string>
+               </property>
+              </widget>
+             </item>
+             <item>
+              <widget class="QPushButton" name="createDirBtn">
+               <property name="text">
+                <string>Create Folder</string>
+               </property>
+              </widget>
+             </item>
+            </layout>
            </item>
           </layout>
          </widget>
@@ -244,7 +219,14 @@
               </widget>
              </item>
              <item row="0" column="1" colspan="2">
-              <widget class="QLineEdit" name="lineEdit_2"/>
+              <widget class="QLineEdit" name="downloadPathEdit">
+               <property name="text">
+                <string>/</string>
+               </property>
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
              <item row="2" column="0">
               <widget class="QLabel" name="label_5">
@@ -261,10 +243,18 @@
               </widget>
              </item>
              <item row="1" column="1" colspan="2">
-              <widget class="QLineEdit" name="lineEdit_6"/>
+              <widget class="QLineEdit" name="downloadNameEdit">
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
              <item row="2" column="1" colspan="2">
-              <widget class="QLineEdit" name="lineEdit_5"/>
+              <widget class="QLineEdit" name="downloadIdEdit">
+               <property name="readOnly">
+                <bool>true</bool>
+               </property>
+              </widget>
              </item>
             </layout>
            </item>
@@ -282,7 +272,7 @@
             </spacer>
            </item>
            <item row="1" column="1">
-            <widget class="QPushButton" name="pushButton_2">
+            <widget class="QPushButton" name="downloadBtn">
              <property name="text">
               <string>Download</string>
              </property>

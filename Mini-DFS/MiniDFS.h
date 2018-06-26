@@ -5,6 +5,7 @@
 
 #include <QDebug>
 #include <QThread>
+#include <QInputDialog>
 #include <QFileDialog>
 #include <QMessageBox>
 
@@ -12,33 +13,40 @@
 #include "NameServer.h"
 #include "DataServer.h"
 
+
 class MiniDFS : public QMainWindow
 {
 	Q_OBJECT
 
 public:
 	MiniDFS(QWidget *parent = Q_NULLPTR);
+	~MiniDFS();
+
+
+public slots:
+	void fileUploaded();
 
 private:
 	Ui::MiniDFSClass ui;
-
-	NameServer *nameServer;
-	DataServer *dataServer_0, dataServer_1, dataServer_2, dataServer_3;
-
 	
-	QTreeWidgetItem *currentDir;
-	QTreeWidgetItem *currentItem;
 	bool isFile;
+
+	QThread *nameThread;
+	QThread *dataThreads[DATASERVER_NUM];
+	NameServer *nameServer;
+	DataServer *dataServers[DATASERVER_NUM];
 
 
 private slots:
 	void on_getFileBtn_clicked();
 	void on_uploadBtn_clicked();
-	void update_uploadPathEdit(bool isFile, QString dir, QString name);
-
-	void on_fileTree_currentItemChanged();
 	void on_createDirBtn_clicked();
 
+	void on_fileTree_currentItemChanged();
+	
+
 signals:
-	void itemChanged(bool isFile, QString dir, QString name);
+	void uploadFile(QString filePath, QString uploadPath);
+	void createDir(QString dirpath, QString dirName);
+
 };

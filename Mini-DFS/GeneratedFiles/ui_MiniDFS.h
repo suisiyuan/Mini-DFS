@@ -26,6 +26,7 @@
 #include <QtWidgets/QToolBar>
 #include <QtWidgets/QToolButton>
 #include <QtWidgets/QTreeWidget>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -41,33 +42,33 @@ public:
     QWidget *tab;
     QGridLayout *gridLayout_2;
     QTreeWidget *fileTree;
-    QSpacerItem *horizontalSpacer_3;
-    QPushButton *createDirBtn;
     QWidget *tab_2;
     QGroupBox *groupBox_2;
     QHBoxLayout *horizontalLayout_2;
     QTabWidget *tabWidget_2;
     QWidget *tab_upload;
-    QGridLayout *gridLayout_4;
+    QVBoxLayout *verticalLayout;
     QGridLayout *gridLayout;
     QLabel *label;
     QLineEdit *uploadFileEdit;
     QToolButton *getFileBtn;
     QLabel *label_4;
     QLineEdit *uploadPathEdit;
+    QHBoxLayout *horizontalLayout_4;
     QSpacerItem *horizontalSpacer;
     QPushButton *uploadBtn;
+    QPushButton *createDirBtn;
     QWidget *tab_download;
     QGridLayout *gridLayout_5;
     QGridLayout *gridLayout_3;
     QLabel *label_2;
-    QLineEdit *lineEdit_2;
+    QLineEdit *downloadPathEdit;
     QLabel *label_5;
     QLabel *label_6;
-    QLineEdit *lineEdit_6;
-    QLineEdit *lineEdit_5;
+    QLineEdit *downloadNameEdit;
+    QLineEdit *downloadIdEdit;
     QSpacerItem *horizontalSpacer_2;
-    QPushButton *pushButton_2;
+    QPushButton *downloadBtn;
     QWidget *tab_3;
     QLabel *label_3;
     QLineEdit *lineEdit_3;
@@ -112,21 +113,10 @@ public:
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
         gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
         fileTree = new QTreeWidget(tab);
-        QTreeWidgetItem *__qtreewidgetitem = new QTreeWidgetItem(fileTree);
-        new QTreeWidgetItem(__qtreewidgetitem);
-        new QTreeWidgetItem(__qtreewidgetitem);
+        new QTreeWidgetItem(fileTree);
         fileTree->setObjectName(QStringLiteral("fileTree"));
 
         gridLayout_2->addWidget(fileTree, 0, 0, 1, 2);
-
-        horizontalSpacer_3 = new QSpacerItem(300, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
-
-        gridLayout_2->addItem(horizontalSpacer_3, 1, 0, 1, 1);
-
-        createDirBtn = new QPushButton(tab);
-        createDirBtn->setObjectName(QStringLiteral("createDirBtn"));
-
-        gridLayout_2->addWidget(createDirBtn, 1, 1, 1, 1);
 
         tabWidget_3->addTab(tab, QString());
         tab_2 = new QWidget();
@@ -153,10 +143,10 @@ public:
         tabWidget_2->setObjectName(QStringLiteral("tabWidget_2"));
         tab_upload = new QWidget();
         tab_upload->setObjectName(QStringLiteral("tab_upload"));
-        gridLayout_4 = new QGridLayout(tab_upload);
-        gridLayout_4->setSpacing(6);
-        gridLayout_4->setContentsMargins(11, 11, 11, 11);
-        gridLayout_4->setObjectName(QStringLiteral("gridLayout_4"));
+        verticalLayout = new QVBoxLayout(tab_upload);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
         gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
@@ -194,16 +184,27 @@ public:
         gridLayout->addWidget(uploadPathEdit, 1, 1, 1, 3);
 
 
-        gridLayout_4->addLayout(gridLayout, 0, 0, 1, 2);
+        verticalLayout->addLayout(gridLayout);
 
-        horizontalSpacer = new QSpacerItem(300, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalLayout_4 = new QHBoxLayout();
+        horizontalLayout_4->setSpacing(6);
+        horizontalLayout_4->setObjectName(QStringLiteral("horizontalLayout_4"));
+        horizontalSpacer = new QSpacerItem(38, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
-        gridLayout_4->addItem(horizontalSpacer, 1, 0, 1, 1);
+        horizontalLayout_4->addItem(horizontalSpacer);
 
         uploadBtn = new QPushButton(tab_upload);
         uploadBtn->setObjectName(QStringLiteral("uploadBtn"));
 
-        gridLayout_4->addWidget(uploadBtn, 1, 1, 1, 1);
+        horizontalLayout_4->addWidget(uploadBtn);
+
+        createDirBtn = new QPushButton(tab_upload);
+        createDirBtn->setObjectName(QStringLiteral("createDirBtn"));
+
+        horizontalLayout_4->addWidget(createDirBtn);
+
+
+        verticalLayout->addLayout(horizontalLayout_4);
 
         tabWidget_2->addTab(tab_upload, QString());
         tab_download = new QWidget();
@@ -222,10 +223,11 @@ public:
 
         gridLayout_3->addWidget(label_2, 0, 0, 1, 1);
 
-        lineEdit_2 = new QLineEdit(tab_download);
-        lineEdit_2->setObjectName(QStringLiteral("lineEdit_2"));
+        downloadPathEdit = new QLineEdit(tab_download);
+        downloadPathEdit->setObjectName(QStringLiteral("downloadPathEdit"));
+        downloadPathEdit->setReadOnly(true);
 
-        gridLayout_3->addWidget(lineEdit_2, 0, 1, 1, 2);
+        gridLayout_3->addWidget(downloadPathEdit, 0, 1, 1, 2);
 
         label_5 = new QLabel(tab_download);
         label_5->setObjectName(QStringLiteral("label_5"));
@@ -237,15 +239,17 @@ public:
 
         gridLayout_3->addWidget(label_6, 1, 0, 1, 1);
 
-        lineEdit_6 = new QLineEdit(tab_download);
-        lineEdit_6->setObjectName(QStringLiteral("lineEdit_6"));
+        downloadNameEdit = new QLineEdit(tab_download);
+        downloadNameEdit->setObjectName(QStringLiteral("downloadNameEdit"));
+        downloadNameEdit->setReadOnly(true);
 
-        gridLayout_3->addWidget(lineEdit_6, 1, 1, 1, 2);
+        gridLayout_3->addWidget(downloadNameEdit, 1, 1, 1, 2);
 
-        lineEdit_5 = new QLineEdit(tab_download);
-        lineEdit_5->setObjectName(QStringLiteral("lineEdit_5"));
+        downloadIdEdit = new QLineEdit(tab_download);
+        downloadIdEdit->setObjectName(QStringLiteral("downloadIdEdit"));
+        downloadIdEdit->setReadOnly(true);
 
-        gridLayout_3->addWidget(lineEdit_5, 2, 1, 1, 2);
+        gridLayout_3->addWidget(downloadIdEdit, 2, 1, 1, 2);
 
 
         gridLayout_5->addLayout(gridLayout_3, 0, 0, 1, 2);
@@ -254,10 +258,10 @@ public:
 
         gridLayout_5->addItem(horizontalSpacer_2, 1, 0, 1, 1);
 
-        pushButton_2 = new QPushButton(tab_download);
-        pushButton_2->setObjectName(QStringLiteral("pushButton_2"));
+        downloadBtn = new QPushButton(tab_download);
+        downloadBtn->setObjectName(QStringLiteral("downloadBtn"));
 
-        gridLayout_5->addWidget(pushButton_2, 1, 1, 1, 1);
+        gridLayout_5->addWidget(downloadBtn, 1, 1, 1, 1);
 
         tabWidget_2->addTab(tab_download, QString());
         tab_3 = new QWidget();
@@ -331,7 +335,7 @@ public:
         ___qtreewidgetitem->setText(4, QApplication::translate("MiniDFSClass", "Chunks", nullptr));
         ___qtreewidgetitem->setText(3, QApplication::translate("MiniDFSClass", "Size", nullptr));
         ___qtreewidgetitem->setText(2, QApplication::translate("MiniDFSClass", "ID", nullptr));
-        ___qtreewidgetitem->setText(1, QApplication::translate("MiniDFSClass", "Is Directory", nullptr));
+        ___qtreewidgetitem->setText(1, QApplication::translate("MiniDFSClass", "Directory?", nullptr));
         ___qtreewidgetitem->setText(0, QApplication::translate("MiniDFSClass", "File", nullptr));
 
         const bool __sortingEnabled = fileTree->isSortingEnabled();
@@ -339,15 +343,8 @@ public:
         QTreeWidgetItem *___qtreewidgetitem1 = fileTree->topLevelItem(0);
         ___qtreewidgetitem1->setText(1, QApplication::translate("MiniDFSClass", "True", nullptr));
         ___qtreewidgetitem1->setText(0, QApplication::translate("MiniDFSClass", "/", nullptr));
-        QTreeWidgetItem *___qtreewidgetitem2 = ___qtreewidgetitem1->child(0);
-        ___qtreewidgetitem2->setText(1, QApplication::translate("MiniDFSClass", "True", nullptr));
-        ___qtreewidgetitem2->setText(0, QApplication::translate("MiniDFSClass", "/data", nullptr));
-        QTreeWidgetItem *___qtreewidgetitem3 = ___qtreewidgetitem1->child(1);
-        ___qtreewidgetitem3->setText(1, QApplication::translate("MiniDFSClass", "False", nullptr));
-        ___qtreewidgetitem3->setText(0, QApplication::translate("MiniDFSClass", "text.pdf", nullptr));
         fileTree->setSortingEnabled(__sortingEnabled);
 
-        createDirBtn->setText(QApplication::translate("MiniDFSClass", "\346\226\260\345\273\272\346\226\207\344\273\266\345\244\271", nullptr));
         tabWidget_3->setTabText(tabWidget_3->indexOf(tab), QApplication::translate("MiniDFSClass", "File List", nullptr));
         tabWidget_3->setTabText(tabWidget_3->indexOf(tab_2), QApplication::translate("MiniDFSClass", "Tab 2", nullptr));
         groupBox_2->setTitle(QApplication::translate("MiniDFSClass", "Client", nullptr));
@@ -357,11 +354,13 @@ public:
         uploadPathEdit->setText(QApplication::translate("MiniDFSClass", "/", nullptr));
         uploadPathEdit->setPlaceholderText(QString());
         uploadBtn->setText(QApplication::translate("MiniDFSClass", "Upload", nullptr));
+        createDirBtn->setText(QApplication::translate("MiniDFSClass", "Create Folder", nullptr));
         tabWidget_2->setTabText(tabWidget_2->indexOf(tab_upload), QApplication::translate("MiniDFSClass", "Upload", nullptr));
         label_2->setText(QApplication::translate("MiniDFSClass", "Path: ", nullptr));
+        downloadPathEdit->setText(QApplication::translate("MiniDFSClass", "/", nullptr));
         label_5->setText(QApplication::translate("MiniDFSClass", "ID: ", nullptr));
         label_6->setText(QApplication::translate("MiniDFSClass", "Name: ", nullptr));
-        pushButton_2->setText(QApplication::translate("MiniDFSClass", "Download", nullptr));
+        downloadBtn->setText(QApplication::translate("MiniDFSClass", "Download", nullptr));
         tabWidget_2->setTabText(tabWidget_2->indexOf(tab_download), QApplication::translate("MiniDFSClass", "Download", nullptr));
         label_3->setText(QString());
         tabWidget_2->setTabText(tabWidget_2->indexOf(tab_3), QApplication::translate("MiniDFSClass", "Location", nullptr));
