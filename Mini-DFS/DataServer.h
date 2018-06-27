@@ -20,11 +20,14 @@ public:
 public slots:
 	void writeChunk(quint32 fileId, quint32 chunkId, QByteArray chunkData, QSemaphore *semaphore);
 	void readChunk(quint32 fileId, quint32 chunkId, QByteArray *chunkBuf, QSemaphore *semaphore);
+	void deleteServer(quint8 id);
 
 private:
 	quint8 serverId;
 	QDir *storeDir;
 	QTreeWidget *fileTree;
+
+	bool compareId(quint8 id);
 
 
 };

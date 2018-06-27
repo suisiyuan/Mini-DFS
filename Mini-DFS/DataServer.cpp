@@ -18,7 +18,12 @@ DataServer::DataServer(quint8 id, QTreeWidget *widget, QObject *parent) :
 // Destructor
 DataServer::~DataServer()
 {
+	fileTree->clear();
+
 	QStringList fileList = storeDir->entryList(QDir::Files);
+	if (fileList.isEmpty())
+		return;
+
 	for (QString fileName : fileList) {
 		QFile(storeDir->filePath(fileName)).remove();
 	}
@@ -84,4 +89,24 @@ void DataServer::readChunk(quint32 fileId, quint32 chunkId, QByteArray *chunkBuf
 		semaphore->release(1);
 		return;
 	}	
+}
+
+
+// É¾³ýÊý¾Ý
+void DataServer::deleteServer(quint8 id)
+{
+	if (compareId(id)) {
+		QStringList fileList = storeDir->entryList(QDir::Files);
+		for (QString fileName : fileList) {
+			QFile(storeDir->filePath(fileName)).remove();
+		}
+		fileTree->clear();
+	}
+}
+
+
+// ÅÐ¶ÏID
+bool DataServer::compareId(quint8 id)
+{
+	return (serverId == id);
 }

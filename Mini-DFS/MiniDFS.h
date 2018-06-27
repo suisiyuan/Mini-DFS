@@ -28,17 +28,15 @@ public slots:
 	void dirCreated();
 	void fileDownloaded();
 	void chunkDownloaded();
+	void serverCorrupted();
 
 private:
 	Ui::MiniDFSClass ui;
 	
-
 	QTreeWidgetItem *currentItem;
 
 	QThread *nameThread;
-	QThread *dataThreads[DATASERVER_NUM];
 	NameServer *nameServer;
-	DataServer *dataServers[DATASERVER_NUM];
 
 
 private slots:
@@ -55,6 +53,11 @@ private slots:
 	void on_deleteBtn_2_clicked();
 	void on_deleteBtn_3_clicked();
 	void on_deleteBtn_4_clicked();
+
+	void on_RecoverBtn_1_clicked();
+	void on_RecoverBtn_2_clicked();
+	void on_RecoverBtn_3_clicked();
+	void on_RecoverBtn_4_clicked();
 	
 
 signals:
@@ -62,4 +65,6 @@ signals:
 	void createDir(QString dirpath, QString dirName);
 	void downloadFile(QTreeWidgetItem *item, QString path);
 	void downloadChunk(QTreeWidgetItem *item, quint32 offset, QString path);
+	void deleteServer(quint8 id);
+	void recoverServer(quint8 id);
 };

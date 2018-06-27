@@ -73,21 +73,25 @@ public:
     QTreeWidget *chunkTree_1;
     QSpacerItem *horizontalSpacer_3;
     QPushButton *deleteBtn_1;
+    QPushButton *recoverBtn_1;
     QWidget *tab_server2;
     QGridLayout *gridLayout_5;
     QTreeWidget *chunkTree_2;
     QSpacerItem *horizontalSpacer_4;
     QPushButton *deleteBtn_2;
+    QPushButton *recoverBtn_2;
     QWidget *tab_server3;
     QGridLayout *gridLayout_6;
     QTreeWidget *chunkTree_3;
     QSpacerItem *horizontalSpacer_5;
     QPushButton *deleteBtn_3;
+    QPushButton *recoverBtn_3;
     QWidget *tab_server4;
     QGridLayout *gridLayout_7;
     QTreeWidget *chunkTree_4;
     QSpacerItem *horizontalSpacer_6;
     QPushButton *deleteBtn_4;
+    QPushButton *recoverBtn_4;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -299,16 +303,23 @@ public:
         chunkTree_1 = new QTreeWidget(tab_server1);
         chunkTree_1->setObjectName(QStringLiteral("chunkTree_1"));
 
-        gridLayout_2->addWidget(chunkTree_1, 0, 0, 1, 2);
+        gridLayout_2->addWidget(chunkTree_1, 0, 0, 1, 3);
 
-        horizontalSpacer_3 = new QSpacerItem(266, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_3 = new QSpacerItem(166, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout_2->addItem(horizontalSpacer_3, 1, 0, 1, 1);
 
         deleteBtn_1 = new QPushButton(tab_server1);
         deleteBtn_1->setObjectName(QStringLiteral("deleteBtn_1"));
+        deleteBtn_1->setEnabled(false);
 
         gridLayout_2->addWidget(deleteBtn_1, 1, 1, 1, 1);
+
+        recoverBtn_1 = new QPushButton(tab_server1);
+        recoverBtn_1->setObjectName(QStringLiteral("recoverBtn_1"));
+        recoverBtn_1->setEnabled(false);
+
+        gridLayout_2->addWidget(recoverBtn_1, 1, 2, 1, 1);
 
         tabWidget->addTab(tab_server1, QString());
         tab_server2 = new QWidget();
@@ -320,16 +331,23 @@ public:
         chunkTree_2 = new QTreeWidget(tab_server2);
         chunkTree_2->setObjectName(QStringLiteral("chunkTree_2"));
 
-        gridLayout_5->addWidget(chunkTree_2, 0, 0, 1, 2);
+        gridLayout_5->addWidget(chunkTree_2, 0, 0, 1, 3);
 
-        horizontalSpacer_4 = new QSpacerItem(266, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_4 = new QSpacerItem(166, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout_5->addItem(horizontalSpacer_4, 1, 0, 1, 1);
 
         deleteBtn_2 = new QPushButton(tab_server2);
         deleteBtn_2->setObjectName(QStringLiteral("deleteBtn_2"));
+        deleteBtn_2->setEnabled(false);
 
         gridLayout_5->addWidget(deleteBtn_2, 1, 1, 1, 1);
+
+        recoverBtn_2 = new QPushButton(tab_server2);
+        recoverBtn_2->setObjectName(QStringLiteral("recoverBtn_2"));
+        recoverBtn_2->setEnabled(false);
+
+        gridLayout_5->addWidget(recoverBtn_2, 1, 2, 1, 1);
 
         tabWidget->addTab(tab_server2, QString());
         tab_server3 = new QWidget();
@@ -341,16 +359,23 @@ public:
         chunkTree_3 = new QTreeWidget(tab_server3);
         chunkTree_3->setObjectName(QStringLiteral("chunkTree_3"));
 
-        gridLayout_6->addWidget(chunkTree_3, 0, 0, 1, 2);
+        gridLayout_6->addWidget(chunkTree_3, 0, 0, 1, 3);
 
-        horizontalSpacer_5 = new QSpacerItem(266, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_5 = new QSpacerItem(166, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout_6->addItem(horizontalSpacer_5, 1, 0, 1, 1);
 
         deleteBtn_3 = new QPushButton(tab_server3);
         deleteBtn_3->setObjectName(QStringLiteral("deleteBtn_3"));
+        deleteBtn_3->setEnabled(false);
 
         gridLayout_6->addWidget(deleteBtn_3, 1, 1, 1, 1);
+
+        recoverBtn_3 = new QPushButton(tab_server3);
+        recoverBtn_3->setObjectName(QStringLiteral("recoverBtn_3"));
+        recoverBtn_3->setEnabled(false);
+
+        gridLayout_6->addWidget(recoverBtn_3, 1, 2, 1, 1);
 
         tabWidget->addTab(tab_server3, QString());
         tab_server4 = new QWidget();
@@ -362,16 +387,23 @@ public:
         chunkTree_4 = new QTreeWidget(tab_server4);
         chunkTree_4->setObjectName(QStringLiteral("chunkTree_4"));
 
-        gridLayout_7->addWidget(chunkTree_4, 0, 0, 1, 2);
+        gridLayout_7->addWidget(chunkTree_4, 0, 0, 1, 3);
 
-        horizontalSpacer_6 = new QSpacerItem(266, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
+        horizontalSpacer_6 = new QSpacerItem(166, 20, QSizePolicy::Expanding, QSizePolicy::Minimum);
 
         gridLayout_7->addItem(horizontalSpacer_6, 1, 0, 1, 1);
 
         deleteBtn_4 = new QPushButton(tab_server4);
         deleteBtn_4->setObjectName(QStringLiteral("deleteBtn_4"));
+        deleteBtn_4->setEnabled(false);
 
         gridLayout_7->addWidget(deleteBtn_4, 1, 1, 1, 1);
+
+        recoverBtn_4 = new QPushButton(tab_server4);
+        recoverBtn_4->setObjectName(QStringLiteral("recoverBtn_4"));
+        recoverBtn_4->setEnabled(false);
+
+        gridLayout_7->addWidget(recoverBtn_4, 1, 2, 1, 1);
 
         tabWidget->addTab(tab_server4, QString());
 
@@ -439,21 +471,25 @@ public:
         ___qtreewidgetitem2->setText(1, QApplication::translate("MiniDFSClass", "MD5", nullptr));
         ___qtreewidgetitem2->setText(0, QApplication::translate("MiniDFSClass", "File/Chunk ID", nullptr));
         deleteBtn_1->setText(QApplication::translate("MiniDFSClass", "Delete", nullptr));
+        recoverBtn_1->setText(QApplication::translate("MiniDFSClass", "Recover", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_server1), QApplication::translate("MiniDFSClass", "Server 1", nullptr));
         QTreeWidgetItem *___qtreewidgetitem3 = chunkTree_2->headerItem();
         ___qtreewidgetitem3->setText(1, QApplication::translate("MiniDFSClass", "MD5", nullptr));
         ___qtreewidgetitem3->setText(0, QApplication::translate("MiniDFSClass", "File/Chunk ID", nullptr));
         deleteBtn_2->setText(QApplication::translate("MiniDFSClass", "Delete", nullptr));
+        recoverBtn_2->setText(QApplication::translate("MiniDFSClass", "Recover", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_server2), QApplication::translate("MiniDFSClass", "Server 2", nullptr));
         QTreeWidgetItem *___qtreewidgetitem4 = chunkTree_3->headerItem();
         ___qtreewidgetitem4->setText(1, QApplication::translate("MiniDFSClass", "MD5", nullptr));
         ___qtreewidgetitem4->setText(0, QApplication::translate("MiniDFSClass", "File/Chunk ID", nullptr));
         deleteBtn_3->setText(QApplication::translate("MiniDFSClass", "Delete", nullptr));
+        recoverBtn_3->setText(QApplication::translate("MiniDFSClass", "Recover", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_server3), QApplication::translate("MiniDFSClass", "Server 3", nullptr));
         QTreeWidgetItem *___qtreewidgetitem5 = chunkTree_4->headerItem();
         ___qtreewidgetitem5->setText(1, QApplication::translate("MiniDFSClass", "MD5", nullptr));
         ___qtreewidgetitem5->setText(0, QApplication::translate("MiniDFSClass", "File/Chunk ID", nullptr));
         deleteBtn_4->setText(QApplication::translate("MiniDFSClass", "Delete", nullptr));
+        recoverBtn_4->setText(QApplication::translate("MiniDFSClass", "Recover", nullptr));
         tabWidget->setTabText(tabWidget->indexOf(tab_server4), QApplication::translate("MiniDFSClass", "Server 4", nullptr));
     } // retranslateUi
 

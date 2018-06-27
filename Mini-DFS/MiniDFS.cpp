@@ -16,24 +16,13 @@ MiniDFS::MiniDFS(QWidget *parent):
 		ui.chunkTree_4
 	};
 
-	// 创建子线程和服务器实例，并将对应服务器实例移至对应子线程。
-	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
-		qDebug() << "Create Data Server Thread" << i;
-		dataThreads[i] = new QThread(this);
-		dataServers[i] = new DataServer(i, widgets[i]);
-		dataServers[i]->moveToThread(dataThreads[i]);
-	}
-
 	qDebug() << "Create Name Server Thread";
 	nameThread = new QThread(this);
-	nameServer = new NameServer(ui.fileTree, dataServers);
+	nameServer = new NameServer(ui.fileTree, widgets);
 	nameServer->moveToThread(nameThread);
 
-	qDebug();
 
 	// 连接信号与槽
-
-	// 上传文件
 	{
 		// 上传文件
 		QObject::connect(
@@ -57,6 +46,13 @@ MiniDFS::MiniDFS(QWidget *parent):
 		QObject::connect(
 			this, SIGNAL(downloadChunk(QTreeWidgetItem *, quint32, QString)),
 			nameServer, SLOT(downloadChunk(QTreeWidgetItem *, quint32, QString)),
+			Qt::QueuedConnection
+		);
+
+		// 删除数据服务器
+		QObject::connect(
+			this, SIGNAL(deleteServer(quint8)),
+			nameServer, SIGNAL(deleteServer(quint8)),
 			Qt::QueuedConnection
 		);
 
@@ -87,6 +83,13 @@ MiniDFS::MiniDFS(QWidget *parent):
 			this, SLOT(chunkDownloaded()),
 			Qt::QueuedConnection
 		);
+
+		// 服务器损坏
+		QObject::connect(
+			nameServer, SIGNAL(serverCorrupted()),
+			this, SLOT(serverCorrupted()),
+			Qt::QueuedConnection
+		);
 	}
 	
 
@@ -94,13 +97,6 @@ MiniDFS::MiniDFS(QWidget *parent):
 	nameThread->start();
 	qDebug() << "Start Name Server Thread";
 
-	// 开启Data Server Thread
-	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
-		dataThreads[i]->start();
-		qDebug() << "Start Data Server Thread" << i;
-	}
-
-	qDebug();
 }
 
 MiniDFS::~MiniDFS()
@@ -110,13 +106,6 @@ MiniDFS::~MiniDFS()
 		delete nameThread;
 	if (nameServer != nullptr)
 		delete nameServer;
-	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
-		dataThreads[i]->terminate();
-		if (dataThreads[i] != nullptr)
-			delete dataThreads[i];
-		if (dataServers[i] != nullptr)
-			delete dataServers[i];
-	}
 }
 
 
@@ -152,6 +141,10 @@ void MiniDFS::on_createDirBtn_clicked()
 // 上传文件成功
 void MiniDFS::fileUploaded()
 {
+	ui.deleteBtn_1->setEnabled(true);
+	ui.deleteBtn_2->setEnabled(true);
+	ui.deleteBtn_3->setEnabled(true);
+	ui.deleteBtn_4->setEnabled(true);
 	QMessageBox::information(this, "Information", "File was uploaded successfully.");
 }
 
@@ -216,6 +209,12 @@ void MiniDFS::chunkDownloaded()
 	QMessageBox::information(this, "Information", "Chunk was downloaded successfully.");
 }
 
+// 服务器文件损坏
+void MiniDFS::serverCorrupted()
+{
+	QMessageBox::critical(this, "Critical", "Server data has been corrupted, please recover it!");
+}
+
 
 /*文件列表视图*/
 void MiniDFS::on_fileTree_currentItemChanged()
@@ -248,24 +247,59 @@ void MiniDFS::on_fileTree_currentItemChanged()
 
 void MiniDFS::on_deleteBtn_1_clicked()
 {
-	
+	ui.deleteBtn_1->setEnabled(false);
+	ui.recoverBtn_1->setEnabled(true);
+	emit deleteServer(0);
 }
 
 void MiniDFS::on_deleteBtn_2_clicked()
 {
-
+	ui.deleteBtn_2->setEnabled(false);
+	ui.recoverBtn_2->setEnabled(true);
+	emit deleteServer(1);
 }
 
 void MiniDFS::on_deleteBtn_3_clicked()
 {
-
+	ui.deleteBtn_3->setEnabled(false);
+	ui.recoverBtn_3->setEnabled(true);
+	emit deleteServer(2);
 }
 
 void MiniDFS::on_deleteBtn_4_clicked()
 {
-
+	ui.deleteBtn_4->setEnabled(false);
+	ui.recoverBtn_4->setEnabled(true);
+	emit deleteServer(3);
 }
 
+void MiniDFS::on_RecoverBtn_1_clicked()
+{
+	ui.deleteBtn_1->setEnabled(true);
+	ui.recoverBtn_1->setEnabled(false);
+	emit recoverServer(0);
+}
+
+void MiniDFS::on_RecoverBtn_2_clicked()
+{
+	ui.deleteBtn_2->setEnabled(true);
+	ui.recoverBtn_2->setEnabled(false);
+	emit recoverServer(1);
+}
+
+void MiniDFS::on_RecoverBtn_3_clicked()
+{
+	ui.deleteBtn_3->setEnabled(true);
+	ui.recoverBtn_3->setEnabled(false);
+	emit recoverServer(2);
+}
+
+void MiniDFS::on_RecoverBtn_4_clicked()
+{
+	ui.deleteBtn_4->setEnabled(true);
+	ui.recoverBtn_4->setEnabled(false);
+	emit recoverServer(3);
+}
 
 
 

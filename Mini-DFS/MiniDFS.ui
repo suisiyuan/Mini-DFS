@@ -309,7 +309,7 @@
            <string>Server 1</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_2">
-           <item row="0" column="0" colspan="2">
+           <item row="0" column="0" colspan="3">
             <widget class="QTreeWidget" name="chunkTree_1">
              <column>
               <property name="text">
@@ -330,7 +330,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>266</width>
+               <width>166</width>
                <height>20</height>
               </size>
              </property>
@@ -338,8 +338,21 @@
            </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="deleteBtn_1">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="recoverBtn_1">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Recover</string>
              </property>
             </widget>
            </item>
@@ -350,7 +363,7 @@
            <string>Server 2</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_5">
-           <item row="0" column="0" colspan="2">
+           <item row="0" column="0" colspan="3">
             <widget class="QTreeWidget" name="chunkTree_2">
              <column>
               <property name="text">
@@ -371,7 +384,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>266</width>
+               <width>166</width>
                <height>20</height>
               </size>
              </property>
@@ -379,8 +392,21 @@
            </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="deleteBtn_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="recoverBtn_2">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Recover</string>
              </property>
             </widget>
            </item>
@@ -391,7 +417,7 @@
            <string>Server 3</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_6">
-           <item row="0" column="0" colspan="2">
+           <item row="0" column="0" colspan="3">
             <widget class="QTreeWidget" name="chunkTree_3">
              <column>
               <property name="text">
@@ -412,7 +438,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>266</width>
+               <width>166</width>
                <height>20</height>
               </size>
              </property>
@@ -420,8 +446,21 @@
            </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="deleteBtn_3">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="recoverBtn_3">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Recover</string>
              </property>
             </widget>
            </item>
@@ -432,7 +471,7 @@
            <string>Server 4</string>
           </attribute>
           <layout class="QGridLayout" name="gridLayout_7">
-           <item row="0" column="0" colspan="2">
+           <item row="0" column="0" colspan="3">
             <widget class="QTreeWidget" name="chunkTree_4">
              <column>
               <property name="text">
@@ -453,7 +492,7 @@
              </property>
              <property name="sizeHint" stdset="0">
               <size>
-               <width>266</width>
+               <width>166</width>
                <height>20</height>
               </size>
              </property>
@@ -461,8 +500,21 @@
            </item>
            <item row="1" column="1">
             <widget class="QPushButton" name="deleteBtn_4">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
              <property name="text">
               <string>Delete</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="2">
+            <widget class="QPushButton" name="recoverBtn_4">
+             <property name="enabled">
+              <bool>false</bool>
+             </property>
+             <property name="text">
+              <string>Recover</string>
              </property>
             </widget>
            </item>

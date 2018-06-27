@@ -1,12 +1,21 @@
 #include "NameServer.h"
 
-NameServer::NameServer(QTreeWidget *treeWidget, DataServer *servers[DATASERVER_NUM], QObject *parent) :
+NameServer::NameServer(QTreeWidget *fileWidget, QTreeWidget *chunkWidget[DATASERVER_NUM], QObject *parent) :
 	QObject(parent),
-	fileTree(treeWidget),
+	fileTree(fileWidget),
 	currentId(0)
 {
+	// 创建子线程和服务器实例，并将对应服务器实例移至对应子线程。
 	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
-		dataServers[i] = servers[i];
+		qDebug() << "Create Data Server Thread" << i;
+		dataThreads[i] = new QThread(this);
+		dataServers[i] = new DataServer(i, chunkWidget[i]);
+		dataServers[i]->moveToThread(dataThreads[i]);
+	}
+
+
+	// 连接信号与槽函数
+	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
 		// 写chunk
 		QObject::connect(
 			this, SIGNAL(writeChunk(quint32, quint32, QByteArray, QSemaphore *)),
@@ -19,11 +28,33 @@ NameServer::NameServer(QTreeWidget *treeWidget, DataServer *servers[DATASERVER_N
 			dataServers[i], SLOT(readChunk(quint32, quint32, QByteArray *, QSemaphore *)),
 			Qt::QueuedConnection
 		);
+		// 删除数据
+		QObject::connect(
+			this, SIGNAL(deleteServer(quint8)),
+			dataServers[i], SLOT(deleteServer(quint8)),
+			Qt::QueuedConnection
+		);
 	}
+
+	// 开启Data Server Thread
+	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
+		dataThreads[i]->start();
+		qDebug() << "Start Data Server Thread" << i;
+	}
+
 }
 
 NameServer::~NameServer()
 {
+	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
+		if (dataThreads[i] != nullptr) {
+			dataThreads[i]->terminate();
+			delete dataThreads[i];
+		}	
+		if (dataServers[i] != nullptr) {
+			delete dataServers[i];
+		}
+	}
 }
 
 
@@ -120,12 +151,20 @@ void NameServer::downloadFile(QTreeWidgetItem *item, QString path)
 	for (quint32 i = 0; i < downloadChunks; i++) {
 		emit readChunk(downloadId, i, chunkBuf, semaphore);
 		semaphore->acquire(DATASERVER_NUM);
-		chunkIntegrity(i, chunkBuf, data);
+		bool correct = chunkIntegrity(i, chunkBuf, data);
+		if (!correct) {
+			file.close();
+			file.remove();
+			delete semaphore;
+			emit serverCorrupted();
+			return;
+		}
+
 		file.write(data);
 	}
-	delete semaphore;
 
 	file.close();
+	delete semaphore;
 
 	emit fileDownloaded();
 }
@@ -144,18 +183,32 @@ void NameServer::downloadChunk(QTreeWidgetItem *item, quint32 offset, QString pa
 	QByteArray data;
 	emit readChunk(downloadId, offset, chunkBuf, semaphore);
 	semaphore->acquire(DATASERVER_NUM);
-	chunkIntegrity(offset, chunkBuf, data);
-	file.write(data);
+	bool correct = chunkIntegrity(offset, chunkBuf, data);
 
-	delete semaphore;
-	file.close();
+	if (!correct) {
+		file.close();
+		file.remove();
+		delete semaphore;
 
-	emit chunkDownloaded();
+		emit serverCorrupted();
+		return;
+	}
+	else {
+		file.write(data);
+		file.close();
+		delete semaphore;
+
+		emit chunkDownloaded();
+		return;
+	}
+
+	
 }
 
+void NameServer::recoverServer(quint8 id)
+{
 
-
-
+}
 
 // 判断一个item是不是文件夹
 bool NameServer::itemIsDirectory(QTreeWidgetItem *item)
@@ -166,8 +219,20 @@ bool NameServer::itemIsDirectory(QTreeWidgetItem *item)
 // 判断chunk是否完整
 bool NameServer::chunkIntegrity(quint32 chunkId, QByteArray chunkBuf[DATASERVER_NUM], QByteArray &result)
 {
-	quint8 index = (chunkId + 1) % DATASERVER_NUM;
-	result = chunkBuf[index];
+	QList<QByteArray> checksum;
+	quint8 point = chunkId % DATASERVER_NUM;
+	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
+		if (i != point) {
+			checksum << QCryptographicHash::hash(chunkBuf[i], QCryptographicHash::Md5);
+		}
+	}
 
-	return true;
+	if ((checksum.at(0) == checksum.at(1)) && (checksum.at(1) == checksum.at(2))) {
+		quint8 index = (chunkId + 1) % DATASERVER_NUM;
+		result = chunkBuf[index];
+		return true;
+	}
+	else {
+		return false;
+	}
 }
