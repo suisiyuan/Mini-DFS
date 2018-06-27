@@ -6,6 +6,7 @@
 #define FILE_COL	0
 #define	DIR_COL		1
 #define ID_COL		2
+#define CHUNK_COL	4
 
 
 
