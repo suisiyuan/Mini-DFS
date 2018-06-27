@@ -56,6 +56,13 @@ MiniDFS::MiniDFS(QWidget *parent):
 			Qt::QueuedConnection
 		);
 
+		// 恢复数据服务器
+		QObject::connect(
+			this, SIGNAL(recoverServer(quint8)),
+			nameServer, SLOT(recoverServer(quint8)),
+			Qt::QueuedConnection
+		);
+
 		// 已上传文件
 		QObject::connect(
 			nameServer, SIGNAL(fileUploaded()),
@@ -249,52 +256,52 @@ void MiniDFS::on_deleteBtn_1_clicked()
 {
 	ui.deleteBtn_1->setEnabled(false);
 	ui.recoverBtn_1->setEnabled(true);
-	emit deleteServer(0);
+	emit deleteServer(SERVER_1);
 }
 
 void MiniDFS::on_deleteBtn_2_clicked()
 {
 	ui.deleteBtn_2->setEnabled(false);
 	ui.recoverBtn_2->setEnabled(true);
-	emit deleteServer(1);
+	emit deleteServer(SERVER_2);
 }
 
 void MiniDFS::on_deleteBtn_3_clicked()
 {
 	ui.deleteBtn_3->setEnabled(false);
 	ui.recoverBtn_3->setEnabled(true);
-	emit deleteServer(2);
+	emit deleteServer(SERVER_3);
 }
 
 void MiniDFS::on_deleteBtn_4_clicked()
 {
 	ui.deleteBtn_4->setEnabled(false);
 	ui.recoverBtn_4->setEnabled(true);
-	emit deleteServer(3);
+	emit deleteServer(SERVER_4);
 }
 
-void MiniDFS::on_RecoverBtn_1_clicked()
+void MiniDFS::on_recoverBtn_1_clicked()
 {
 	ui.deleteBtn_1->setEnabled(true);
 	ui.recoverBtn_1->setEnabled(false);
 	emit recoverServer(0);
 }
 
-void MiniDFS::on_RecoverBtn_2_clicked()
+void MiniDFS::on_recoverBtn_2_clicked()
 {
 	ui.deleteBtn_2->setEnabled(true);
 	ui.recoverBtn_2->setEnabled(false);
 	emit recoverServer(1);
 }
 
-void MiniDFS::on_RecoverBtn_3_clicked()
+void MiniDFS::on_recoverBtn_3_clicked()
 {
 	ui.deleteBtn_3->setEnabled(true);
 	ui.recoverBtn_3->setEnabled(false);
 	emit recoverServer(2);
 }
 
-void MiniDFS::on_RecoverBtn_4_clicked()
+void MiniDFS::on_recoverBtn_4_clicked()
 {
 	ui.deleteBtn_4->setEnabled(true);
 	ui.recoverBtn_4->setEnabled(false);

@@ -23,8 +23,9 @@
 
 #define LISTFILE_NAME	"datalist.txt"
 
-// Data Server
-#define SERVER_0	0
-#define SERVER_1	1
-#define SERVER_2	2
-#define SERVER_3	3
+
+#define ALL_SERVERS	0x0F
+#define SERVER_1	0x01
+#define SERVER_2	0x02
+#define SERVER_3	0x04
+#define SERVER_4	0x08

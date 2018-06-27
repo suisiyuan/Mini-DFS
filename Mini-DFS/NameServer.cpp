@@ -18,8 +18,8 @@ NameServer::NameServer(QTreeWidget *fileWidget, QTreeWidget *chunkWidget[DATASER
 	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
 		// 写chunk
 		QObject::connect(
-			this, SIGNAL(writeChunk(quint32, quint32, QByteArray, QSemaphore *)),
-			dataServers[i], SLOT(writeChunk(quint32, quint32, QByteArray, QSemaphore *)),
+			this, SIGNAL(writeChunk(quint32, quint32, quint8, QByteArray, QSemaphore *)),
+			dataServers[i], SLOT(writeChunk(quint32, quint32, quint8, QByteArray, QSemaphore *)),
 			Qt::QueuedConnection
 		);
 		// 读chunk
@@ -72,7 +72,7 @@ void NameServer::uploadFile(QString filePath, QString uploadPath)
 	QSemaphore *semaphore = new QSemaphore(0);
 	for (quint32 i = 0; i < chunkNum; i++) {
 		QByteArray chunk = file.read(CHUNK_SIZE);
-		emit writeChunk(currentId, i, chunk, semaphore);
+		emit writeChunk(currentId, i, ALL_SERVERS, chunk, semaphore);
 		semaphore->acquire(REPLICA_NUM);
 	}
 	delete semaphore;
@@ -159,7 +159,6 @@ void NameServer::downloadFile(QTreeWidgetItem *item, QString path)
 			emit serverCorrupted();
 			return;
 		}
-
 		file.write(data);
 	}
 
@@ -183,12 +182,12 @@ void NameServer::downloadChunk(QTreeWidgetItem *item, quint32 offset, QString pa
 	QByteArray data;
 	emit readChunk(downloadId, offset, chunkBuf, semaphore);
 	semaphore->acquire(DATASERVER_NUM);
+	delete semaphore;
 	bool correct = chunkIntegrity(offset, chunkBuf, data);
 
 	if (!correct) {
 		file.close();
 		file.remove();
-		delete semaphore;
 
 		emit serverCorrupted();
 		return;
@@ -196,7 +195,6 @@ void NameServer::downloadChunk(QTreeWidgetItem *item, quint32 offset, QString pa
 	else {
 		file.write(data);
 		file.close();
-		delete semaphore;
 
 		emit chunkDownloaded();
 		return;
@@ -205,9 +203,38 @@ void NameServer::downloadChunk(QTreeWidgetItem *item, quint32 offset, QString pa
 	
 }
 
+
+// 恢复数据服务器
 void NameServer::recoverServer(quint8 id)
 {
+	QList<QTreeWidgetItem *> items = fileTree->findItems("False", Qt::MatchFixedString | Qt::MatchRecursive, DIR_COL);
+	if (items.isEmpty()) {
+		emit serverRecovered();
+		return;
+	}
+	
+	QSemaphore *semaphore = new QSemaphore(0);
+	for (auto item : items) {
+		quint32 fileId = item->text(ID_COL).toInt();
+		quint32 chunkNum = item->text(CHUNK_COL).toInt();
+		for (quint32 i = 0; i < chunkNum; i++) {
+			if (i % DATASERVER_NUM == id)
+				continue;
+			QByteArray chunkBuf[DATASERVER_NUM];
+			
+			QByteArray data;
+			emit readChunk(fileId, i, chunkBuf, semaphore);
+			semaphore->acquire(DATASERVER_NUM);
+			
+			QByteArray orig = getOriChunk(i, id, chunkBuf);
 
+			emit writeChunk(fileId, i, (0x01 << id), orig, semaphore);
+			semaphore->acquire(1);		
+		}
+	}
+	delete semaphore;
+	emit serverRecovered();
+	return;
 }
 
 // 判断一个item是不是文件夹
@@ -235,4 +262,16 @@ bool NameServer::chunkIntegrity(quint32 chunkId, QByteArray chunkBuf[DATASERVER_
 	else {
 		return false;
 	}
+}
+
+// 恢复原始chunk
+QByteArray NameServer::getOriChunk(quint32 chunkId, quint8 serverId, QByteArray chunkBuf[DATASERVER_NUM])
+{
+	quint8 point = chunkId % DATASERVER_NUM;
+	for (quint8 i = 0; i < DATASERVER_NUM; i++) {
+		if ((i != point) && (i != serverId)) {
+			return chunkBuf[i];
+		}
+	}
+
 }

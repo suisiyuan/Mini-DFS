@@ -5,10 +5,12 @@
 DataServer::DataServer(quint8 id, QTreeWidget *widget, QObject *parent) :
 	QObject(parent),
 	serverId(id),
+	serverMask(0x01),
 	storeDir(nullptr),
 	fileTree(widget)
 {
-	storeDir = new QDir(QDir(DATA_DIR).filePath(QString::number(id)));
+	serverMask = serverMask << serverId;
+	storeDir = new QDir(QDir(DATA_DIR).filePath(QString::number(serverId)));
 
 	if (!storeDir->exists()) {
 		storeDir->mkpath(".");
@@ -32,9 +34,9 @@ DataServer::~DataServer()
 
 
 // Ð´chunk
-void DataServer::writeChunk(quint32 fileId, quint32 chunkId, QByteArray chunkData, QSemaphore *semaphore)
+void DataServer::writeChunk(quint32 fileId, quint32 chunkId, quint8 servers, QByteArray chunkData, QSemaphore *semaphore)
 {
-	if (chunkId % DATASERVER_NUM == serverId)
+	if ((chunkId % DATASERVER_NUM == serverId) || !(serverMask & servers))
 		return;
 
 	QString fileName = QString::number(fileId) + "_" + QString::number(chunkId) + ".chunk";
@@ -43,7 +45,10 @@ void DataServer::writeChunk(quint32 fileId, quint32 chunkId, QByteArray chunkDat
 	chunkFile.write(chunkData);
 	chunkFile.close();
 
+	QMutex mutex;
+	mutex.lock();
 	semaphore->release(1);
+	mutex.unlock();
 	
 	QList<QTreeWidgetItem *> items = fileTree->findItems(QString::number(fileId), Qt::MatchFixedString, 0);
 	if (items.isEmpty()) {
@@ -70,7 +75,10 @@ void DataServer::readChunk(quint32 fileId, quint32 chunkId, QByteArray *chunkBuf
 {
 	if (chunkId % DATASERVER_NUM == serverId) {
 		chunkBuf[serverId] = QByteArray();
+		QMutex mutex;
+		mutex.lock();
 		semaphore->release(1);
+		mutex.unlock();
 		return;
 	}
 		
@@ -78,7 +86,10 @@ void DataServer::readChunk(quint32 fileId, quint32 chunkId, QByteArray *chunkBuf
 	QFile chunkFile(storeDir->filePath(fileName));
 	if (!chunkFile.exists()) {
 		chunkBuf[serverId] = QByteArray();
+		QMutex mutex;
+		mutex.lock();
 		semaphore->release(1);
+		mutex.unlock();
 		return;
 	}
 	else {
@@ -86,7 +97,10 @@ void DataServer::readChunk(quint32 fileId, quint32 chunkId, QByteArray *chunkBuf
 		QByteArray chunkData = chunkFile.readAll();
 		chunkFile.close();
 		chunkBuf[serverId] = chunkData;
+		QMutex mutex;
+		mutex.lock();
 		semaphore->release(1);
+		mutex.unlock();
 		return;
 	}	
 }
@@ -95,7 +109,7 @@ void DataServer::readChunk(quint32 fileId, quint32 chunkId, QByteArray *chunkBuf
 // É¾³ýÊý¾Ý
 void DataServer::deleteServer(quint8 id)
 {
-	if (compareId(id)) {
+	if (serverMask & id) {
 		QStringList fileList = storeDir->entryList(QDir::Files);
 		for (QString fileName : fileList) {
 			QFile(storeDir->filePath(fileName)).remove();
@@ -104,9 +118,3 @@ void DataServer::deleteServer(quint8 id)
 	}
 }
 
-
-// ÅÐ¶ÏID
-bool DataServer::compareId(quint8 id)
-{
-	return (serverId == id);
-}

@@ -2,6 +2,8 @@
 
 #include <QDir>
 #include <QFile>
+#include <QDebug>
+#include <QMutex>
 #include <QSemaphore>
 #include <QTreeWidget>
 #include <QCryptographicHash>
@@ -18,16 +20,16 @@ public:
 	~DataServer();
 
 public slots:
-	void writeChunk(quint32 fileId, quint32 chunkId, QByteArray chunkData, QSemaphore *semaphore);
+	void writeChunk(quint32 fileId, quint32 chunkId, quint8 servers, QByteArray chunkData, QSemaphore *semaphore);
 	void readChunk(quint32 fileId, quint32 chunkId, QByteArray *chunkBuf, QSemaphore *semaphore);
 	void deleteServer(quint8 id);
 
 private:
 	quint8 serverId;
+	quint8 serverMask;
+
 	QDir *storeDir;
 	QTreeWidget *fileTree;
-
-	bool compareId(quint8 id);
 
 
 };

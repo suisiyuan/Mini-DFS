@@ -54,10 +54,10 @@ private slots:
 	void on_deleteBtn_3_clicked();
 	void on_deleteBtn_4_clicked();
 
-	void on_RecoverBtn_1_clicked();
-	void on_RecoverBtn_2_clicked();
-	void on_RecoverBtn_3_clicked();
-	void on_RecoverBtn_4_clicked();
+	void on_recoverBtn_1_clicked();
+	void on_recoverBtn_2_clicked();
+	void on_recoverBtn_3_clicked();
+	void on_recoverBtn_4_clicked();
 	
 
 signals:
